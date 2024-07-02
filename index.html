@@ -32,12 +32,20 @@
     
     <!-- Symbols Input Form -->
     <div>
-        <h3>使用する画像をアップロードしてください</h3>
+        <h3>画像をアップロードしてください</h3>
         <h4>※画像は5枚以上の設定を推奨</h4>
-        <input type="file" id="symbols-input" multiple accept="image/*">
+        <input type="file" id="symbols-input" multiple>
         <button id="set-symbols-button" class="set-symbols-button">画像を設定</button>
+        <div id="image-container"></div>
     </div>
-    <div id="image-container"></div>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <p>画像が設定されていません。画像の設定をお願いします。</p>
+        </div>
+    </div>
     
     <script src="script.js"></script>
 </body>
