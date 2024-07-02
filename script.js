@@ -1,4 +1,5 @@
-const symbols = [
+// Initial symbols array (default values)
+let symbols = [
     'https://www.inside-games.jp/imgs/ogp_f/1103894.jpg',
     'https://www.inside-games.jp/imgs/zoom/1103869.jpg',
     'https://static-cdn.jtvnw.net/jtv_user_pictures/cda793c5-a533-4b7c-9412-d4f364a732d2-profile_image-300x300.png',
@@ -6,12 +7,17 @@ const symbols = [
     'https://i.pinimg.com/originals/c1/85/0c/c1850cb4e7b0642ffeab9e05f1be51ec.jpg',
     'https://i.pinimg.com/736x/0f/b3/c2/0fb3c251b84cad528463611c096dba49.jpg'
 ];
+
 const reel1 = document.getElementById('reel1');
 const reel2 = document.getElementById('reel2');
 const reel3 = document.getElementById('reel3');
 const startButton = document.getElementById('start-button');
-const stopButton = document.getElementById('stop-button');
+const stopButton1 = document.getElementById('stop-button-1');
+const stopButton2 = document.getElementById('stop-button-2');
+const stopButton3 = document.getElementById('stop-button-3');
 const messageElement = document.getElementById('message');
+const symbolsInput = document.getElementById('symbols-input');
+const setSymbolsButton = document.getElementById('set-symbols-button');
 
 let spinningIntervals = [null, null, null];
 let stopCount = 0;
@@ -20,7 +26,7 @@ const symbolHeight = 100; // Height of each symbol in pixels
 const symbolsToShow = 3; // Number of symbols visible in the reel
 
 // Define target symbols for each reel
-const targetSymbols = [
+let targetSymbols = [
     symbols[Math.floor(Math.random() * symbols.length)],
     symbols[Math.floor(Math.random() * symbols.length)],
     symbols[Math.floor(Math.random() * symbols.length)]
@@ -64,28 +70,46 @@ startButton.addEventListener('click', function() {
     }
 });
 
-stopButton.addEventListener('click', function() {
-    if (stopCount < 3) {
-        stopCount++;
-        stopReel(stopCount);
-        if (stopCount === 3) {
-            stopButton.disabled = true;
-            startButton.disabled = false;
-        }
+stopButton1.addEventListener('click', function() {
+    stopReel(1);
+});
+
+stopButton2.addEventListener('click', function() {
+    stopReel(2);
+});
+
+stopButton3.addEventListener('click', function() {
+    stopReel(3);
+});
+
+setSymbolsButton.addEventListener('click', function() {
+    const input = symbolsInput.value;
+    if (input) {
+        symbols = input.split(',').map(url => url.trim());
+        targetSymbols = [
+            symbols[Math.floor(Math.random() * symbols.length)],
+            symbols[Math.floor(Math.random() * symbols.length)],
+            symbols[Math.floor(Math.random() * symbols.length)]
+        ];
+        createReelContent(reel1, targetSymbols[0]);
+        createReelContent(reel2, targetSymbols[1]);
+        createReelContent(reel3, targetSymbols[2]);
     }
 });
 
 function startSpin() {
     stopCount = 0;
-    clearReelContent(reel1);
-    clearReelContent(reel2);
-    clearReelContent(reel3);
+    startButton.disabled = true;
+    stopButton1.disabled = false;
+    stopButton2.disabled = false;
+    stopButton3.disabled = false;
+    hideChanceMessage();
+
+    // Shuffle symbols for each spin
+    shuffleSymbols();
     createReelContent(reel1, targetSymbols[0]);
     createReelContent(reel2, targetSymbols[1]);
     createReelContent(reel3, targetSymbols[2]);
-
-    startButton.disabled = true;
-    stopButton.disabled = false;
 
     spinningIntervals[0] = setInterval(() => shiftSymbols(reel1), 100); // Adjusted interval for slower spin
     spinningIntervals[1] = setInterval(() => shiftSymbols(reel2), 100); // Adjusted interval for slower spin
@@ -97,15 +121,22 @@ function stopReel(count) {
         case 1:
             clearInterval(spinningIntervals[0]);
             spinningIntervals[0] = null;
+            stopButton1.disabled = true;
             break;
         case 2:
             clearInterval(spinningIntervals[1]);
             spinningIntervals[1] = null;
+            stopButton2.disabled = true;
             break;
         case 3:
             clearInterval(spinningIntervals[2]);
             spinningIntervals[2] = null;
+            stopButton3.disabled = true;
             break;
+    }
+    stopCount++;
+    if (stopCount === 3) {
+        startButton.disabled = false;
     }
 }
 
