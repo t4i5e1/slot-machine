@@ -9,6 +9,8 @@ const messageElement = document.getElementById('message');
 const symbolsInput = document.getElementById('symbols-input');
 const setSymbolsButton = document.getElementById('set-symbols-button');
 const imageContainer = document.getElementById('image-container');
+const modal = document.getElementById('modal');
+const closeModal = document.getElementById('close-modal');
 
 let symbols = [];
 let spinningIntervals = [null, null, null];
@@ -71,26 +73,38 @@ function createReelContent(reel, targetSymbol) {
 }
 
 startButton.addEventListener('click', function() {
-    if (!spinningIntervals.some(interval => interval !== null)) {
-        targetSymbols = [
-            symbols[Math.floor(Math.random() * symbols.length)],
-            symbols[Math.floor(Math.random() * symbols.length)],
-            symbols[Math.floor(Math.random() * symbols.length)]
-        ];
-        startSpin();
+    if (symbols.length < 5) {
+        showModal();
+    } else {
+        if (!spinningIntervals.some(interval => interval !== null)) {
+            targetSymbols = [
+                symbols[Math.floor(Math.random() * symbols.length)],
+                symbols[Math.floor(Math.random() * symbols.length)],
+                symbols[Math.floor(Math.random() * symbols.length)]
+            ];
+            hideMessages(); // Hide messages when START button is pressed
+            startSpin();
+        }
     }
 });
 
 stopButton1.addEventListener('click', function() {
     stopReel(1);
+    stopButton1.disabled = true; // Disable button after pressing
 });
 
 stopButton2.addEventListener('click', function() {
     stopReel(2);
+    stopButton2.disabled = true; // Disable button after pressing
 });
 
 stopButton3.addEventListener('click', function() {
     stopReel(3);
+    stopButton3.disabled = true; // Disable button after pressing
+});
+
+closeModal.addEventListener('click', function() {
+    modal.style.display = "none";
 });
 
 function startSpin() {
@@ -149,20 +163,37 @@ function checkMatch() {
     const reel2Symbols = reel2.querySelectorAll('.symbol img');
     const reel3Symbols = reel3.querySelectorAll('.symbol img');
 
-    if (
-        reel1Symbols[1].src === reel2Symbols[1].src &&
-        reel2Symbols[1].src === reel3Symbols[1].src
-    ) {
+    if (reel1Symbols[1].src === reel2Symbols[1].src && reel2Symbols[1].src === reel3Symbols[1].src) {
+        showBingoMessage();
+    } else if (reel1Symbols[1].src === reel2Symbols[1].src || reel2Symbols[1].src === reel3Symbols[1].src || reel1Symbols[1].src === reel3Symbols[1].src) {
         showChanceMessage();
+    } else {
+        hideMessages();
     }
 }
 
 function showChanceMessage() {
-    messageElement.textContent = 'CHANCE';
+    messageElement.textContent = 'MISS';
     messageElement.classList.add('show');
 }
 
-function hideChanceMessage() {
+function showBingoMessage() {
+    messageElement.textContent = 'PERFECT';
+    messageElement.classList.add('show');
+}
+
+function hideMessages() {
     messageElement.textContent = '';
     messageElement.classList.remove('show');
+}
+
+function showModal() {
+    modal.style.display = "block";
+}
+
+// Close the modal when the user clicks anywhere outside of the modal
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
