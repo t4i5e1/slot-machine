@@ -121,9 +121,9 @@ function startSpin() {
     stopButton2.disabled = false;
     stopButton3.disabled = false;
 
-    spinningIntervals[0] = setInterval(() => shiftSymbols(reel1), 300); // Adjusted interval for slower spin
-    spinningIntervals[1] = setInterval(() => shiftSymbols(reel2), 300); // Adjusted interval for slower spin
-    spinningIntervals[2] = setInterval(() => shiftSymbols(reel3), 300); // Adjusted interval for slower spin
+    spinningIntervals[0] = setInterval(() => shiftSymbols(reel1), 100); // Adjusted interval for slower spin
+    spinningIntervals[1] = setInterval(() => shiftSymbols(reel2), 100); // Adjusted interval for slower spin
+    spinningIntervals[2] = setInterval(() => shiftSymbols(reel3), 100); // Adjusted interval for slower spin
 }
 
 function stopReel(count) {
