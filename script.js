@@ -164,20 +164,20 @@ function checkMatch() {
     const reel3Symbols = reel3.querySelectorAll('.symbol img');
 
     if (reel1Symbols[1].src === reel2Symbols[1].src && reel2Symbols[1].src === reel3Symbols[1].src) {
-        showBingoMessage();
+        showPerfectMessage();
     } else if (reel1Symbols[1].src === reel2Symbols[1].src || reel2Symbols[1].src === reel3Symbols[1].src || reel1Symbols[1].src === reel3Symbols[1].src) {
-        showChanceMessage();
+        showMissMessage();
     } else {
         hideMessages();
     }
 }
 
-function showChanceMessage() {
+function showMissMessage() {
     messageElement.textContent = 'MISS';
     messageElement.classList.add('show');
 }
 
-function showBingoMessage() {
+function showPerfectMessage() {
     messageElement.textContent = 'PERFECT';
     messageElement.classList.add('show');
 }
