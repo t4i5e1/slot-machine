@@ -121,9 +121,9 @@ function startSpin() {
     stopButton2.disabled = false;
     stopButton3.disabled = false;
 
-    spinningIntervals[0] = setInterval(() => shiftSymbols(reel1), 300); // Adjusted interval for slower spin
-    spinningIntervals[1] = setInterval(() => shiftSymbols(reel2), 300); // Adjusted interval for slower spin
-    spinningIntervals[2] = setInterval(() => shiftSymbols(reel3), 300); // Adjusted interval for slower spin
+    spinningIntervals[0] = setInterval(() => shiftSymbols(reel1), 100); // Adjusted interval for slower spin
+    spinningIntervals[1] = setInterval(() => shiftSymbols(reel2), 100); // Adjusted interval for slower spin
+    spinningIntervals[2] = setInterval(() => shiftSymbols(reel3), 100); // Adjusted interval for slower spin
 }
 
 function stopReel(count) {
@@ -164,20 +164,20 @@ function checkMatch() {
     const reel3Symbols = reel3.querySelectorAll('.symbol img');
 
     if (reel1Symbols[1].src === reel2Symbols[1].src && reel2Symbols[1].src === reel3Symbols[1].src) {
-        showBingoMessage();
+        showPerfectMessage();
     } else if (reel1Symbols[1].src === reel2Symbols[1].src || reel2Symbols[1].src === reel3Symbols[1].src || reel1Symbols[1].src === reel3Symbols[1].src) {
-        showChanceMessage();
+        showMissMessage();
     } else {
         hideMessages();
     }
 }
 
-function showChanceMessage() {
+function showMissMessage() {
     messageElement.textContent = 'MISS';
     messageElement.classList.add('show');
 }
 
-function showBingoMessage() {
+function showPerfectMessage() {
     messageElement.textContent = 'PERFECT';
     messageElement.classList.add('show');
 }
